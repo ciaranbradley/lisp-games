@@ -6,7 +6,7 @@
   (list "ANTARTES" "SIRIUS"
 	"RIGEL" "DENEB"
 	"POCYON" "CAPELLA"
-	"VEGA" "BETENGULUSE"
+	"VEGA" "BETELGEUSE"
 	"CANAPUS" "ALDEBARAN"
 	"ALTAIR" "REGULUS"
 	"SAGITATTARIUS" "ARCTURUS"
@@ -725,7 +725,7 @@
 			    (location-quad-x enterprise-location)
 			    (location-quad-y enterprise-location)))
 		     (remove k klingon-list))
-	       (reduce-klingon 1)
+	       (reduce-klingons 1)
 	       (return-from torpedo nil)))
 
 	   (dolist (s starbase-list)
@@ -849,29 +849,137 @@
 	     (format *standard-output*
 		     "~&Klingon in sector ~D, ~D~%Course = ~ 3,2F~%Distance= ~3,2F~2%" (1+ i) (1+ j) (first data) (second data)))))))
 
-(defun starbase-nav-data () ...)
+(defun starbase-nav-data () 
+  (block data
+    (let ((starbase-list (sector-starbase-list
+			  (aref quadrants
+				(location-quad-x enterprise-location)
+				(location-quad-y enterprise-location)))))
+      (when (= (length starbase-list) 0)
+	(terpri)
+	(write-line "Sensors report no starbase in this quadrant")
+	(terpri)
+	(return-from data nil))
+      
+      (format *standard-output*
+	      "~%Distance to starbase~P~2%"
+	      (length starbase-list))
 
-(defun navigation-calculator () ...)
+      (loop for (i j) in starbase-list do
+	   (let ((data (calculate-relative-course
+			(sub-locations
+			 (make-location
+			  :quad-x (location-quad-x enterprise-location)
+			  :quad-y (location-quad-y enterprise-location)
+			  :sect-x i :sect-y j)
+			 enterprise-location))))
 
-(defun status-report () ...)
+	     (format *standard-output*
+		     (concatenate 'string
+				  "~&starbase in sector ~D, ~D"
+				  "~%Course = ~3,2F~%Distance= ~3,2F~2%")
+		     (1+ i) (1+ j) (first data) (second data)))))))
 
-(defun galactic-region-name-map () ...)
+(defun navigation-calculator () 
+  (block navigation
+    (terpri)
+    (write-line "Navigation calculator")
+    (format t "~%Current position in quadrant is ~D, ~D sector ~Dm ~D~2%"
+	    (1+ (location-quad-x enterprise-location))
+	    (1+ (location-quad-y enterprise-location))
+	    (1+ (location-sect-x enterprise-location))
+	    (1+ (location-sect-y enterprise-location)))
 
-(defun library-computer () ...)
+    (write-line "Enter quadrant coordinates")
+    (let ((quad-x (progn
+		    (write-string "X coordinate (1..8): ")
+		    (force-output)
+		    (ignore-errors (parse-integer (read-line)))))
+	  (quad-y (progn
+		    (write-string "Y coordinate (1..8): ")
+		    (force-output)
+		    (ignore-errors (parse-integer (read-line))))))
+      
+      (unless (and (numberp quad-x) (numberp quad-y))
+	(write-line "What??")
+	(return-from navigation nil))
+      
+      (when (or (< quad-x 1) (> quad-x 8)
+		(< quad-y 1) (> quad-y 8))
+	(terpri)
+	(write-line "Not a valid quadrant.")
+	(terpri)
+	(return-from navigation nil))
+      
+      (let ((data (calculate-relative-course
+		   (sub-locations
+		    (make-location :quad-x (1- quad-x) :quad-y (1- quad-y)
+				   :sect-x 
+				   (location-sect-x enterprise-location)
+				   :sect-y
+				   (location-sect-y enterprise-location))
+		    enterprise-location))))
 
-(defun select-command () ...)
+	(format t "~%Navigation~%Course = ~3,2F~%Distance= ~3,2F~2%"
+		(first data) (second data))))))
 
-(defun describe-settings () ...)
+(defun status-report () 
+  (progn
+    (format *standard-output* "~%Status report~%")
+    (format *standard-output* "There are ~D Klingon~P left.~%"
+	    total-klingons total-klingons)
+    (format *standard-output* "Mission must be completed in ~D day~P.~%"
+	    remaining-days remaining-days)
+    (format *standard-output*
+	    "The federation has ~D starbase~P in the galaxy.~%"
+	    total-starbases total-starbases)
+    nil))
 
-(defun found-starbase-quadrant () ...)
+(defun galactic-region-name-map () 
+  (display-file map-file))
 
-(defun dock-to-starbase () ...)
+(defun library-computer () 
+  (block computer
+    (when (> library-computer-status .85)
+      (write-line "Library computer disabled.")
+      (return-from computer nil))
+    (let ((command
+	   (progn
+	     (write-string "Computer active and awaiting command? ")
+	     (force-output)
+	     (ignore-errors (parse-integer (read-line))))))
+      (case command
+	(0 (cumulative-galactic-record))
+	(1 (status-report))
+	(2 (photon-torpedo-data))
+	(3 (starbase-nav-data))
+	(4 (navigation-calculator))
+	(5 (galactic-region-name-map))
+	(otherwise
+	 (terpri)
+	 (write-line "The library computer accepts the following commands:")
+	 (write-line "  0  -- Cumulative galactic record")
+	 (write-line "  1  -- Status report")
+	 (write-line "  2  -- Photon torpedo data")
+	 (write-line "  3  -- Starbase navigation data")
+	 (write-line "  4  -- Navigation calculator")
+	 (write-line "  5  -- Galactic region name map")
+	 (terpri)))
+      nil)))
 
-(defun setup-parameters () ...)
+(defun select-command () "...")
 
-(defun update-date (number) ...)
+(defun describe-settings () "...")
 
-(defun play-again-p () ...)
+(defun found-starbase-quadrant () "...")
 
-(defun startrek () ...)
+(defun dock-to-starbase () "...")
+
+(defun setup-parameters () "...")
+
+(defun update-date (number) "...")
+
+(defun play-again-p () "...")
+
+(defun startrek () "...")
 
