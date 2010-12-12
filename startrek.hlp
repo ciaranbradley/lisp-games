@@ -1,0 +1,111 @@
+		 *************************************
+		 *                                   *
+		 *    *  *  SUPER STAR TREK  *  *    *
+		 *                                   *
+		 *************************************
+
+1. When you see \COMMAND ? \ printed, enter one of the legal commands
+(NAV, SRS, LRS, FHA, TOR, SHE, DAM, COM, OR XXX).
+
+2. If you should type a illegal command you will get a short list of
+legal commands printed out.
+
+3. Some commands require that you enter data (for example the 'NAV'
+command comes back with 'COURSE (1-9) ?'.) If you type in illegal data
+that command will be aborted.
+
+The galaxy is divided into a 8 x 8 quadrant grid, and each quadrant is
+further divided into a 8 x 8 sector grid.
+
+You will be assigned a starting point somewhere in the galaxy to begin
+your tour of duty as commander of the starship Enterprise; your
+mission: to seek out and destroy the fleet of Klingon warships which
+are menacing The United Federation of Planets.
+
+You have the following commands available to you as captain of the
+starship Enterprise:
+
+\NAV\ command = warp engine control
+    Course is in a circular numerical vector arrangement as shown. Integer
+    and real values may be used. 
+    (The course 1.5 is hafway between 1 and 2.)
+
+      4  3  2
+       . . . 
+        ...	   
+    5 ---*--- 1
+        ...	 
+       . . .
+      6  7  8
+
+    COURSE
+
+    Values may approach 9.0, which itself is equivalent to 1.0.
+
+    One warp factor is the size of one quadrant. Therefore, to get from
+    quadrant 6,5 to 5,5, you would use course 3, warp factor 1.
+
+\SRS\ command = short range sensor scan
+    Shows you a scan of the present quadrant.
+
+    Symbiology of your sensor scan is as follows:
+    <*> = Your starships position
+    +K+ = Klingon battle cruiser
+    >!< = Federation starbase
+     *  = star
+
+    A condensed status report will altso be presented.
+
+\LRS\ command = long range scan
+    Shows conditions in space for one quadrant on each side of the
+    Enterprise (which is in the middle of the scan.)
+    The scan code is coded in the form \###\, where the units digit if the
+    number of stars, the tens digit is the number of starbase and the
+    hundreds digit is the number of Klingons.
+
+    Example - 207 = 2 Klingons, no starbases, 7 stars
+
+\PHA\ command = phaser control
+    Allows you to destroy the klingon by zapping them with a suitably
+    large unit of energy depleted from their shield power. (Remember
+    Klingons have phasers too!)
+
+\TOR\ command = photon torpedo control
+    Torpedo course is the same as used in warp engine control. If you hit
+    the Klingon vessel, he is destroyed and can not fire back at you. If
+    you miss, you are subject to his phaser fire. In either case,
+    you are altso subject to the phaser fire of all the other Klingons in
+    the quadrant.
+
+    The library computer (\COM\) has an option to compute torpedo
+    tranjectory for you (option 2).
+
+\SHE\ command = shield control
+    Defines the number of energy units to be assigned to the
+    shields. Energy is taken from total ships energy. Note that the status
+    display total energy includes shield energy.
+
+\DAM\ command = damage control report
+    Gives the state of repairs for all devices. Where a negative 'state of
+    repair' shows that the device is temporarly damaged.
+
+\COM\ command = library-computer
+    The library computer contains six options:
+    option 0 = cumulative galactic record
+       This option shows computer memory of all previous short and long range
+       sensor scans.
+    option 1 = status report
+       This option shows the number of Klingons, stardates and starbases
+       remaining in the game.
+    option 2 = photon torpedo data
+       Which gives the direction and distance from Enterprise to all Klingons
+       in the quadrant.
+    option 3 = starbase nav data
+       This option gives the direction and distance to any starbases within
+       your quadrant.
+    option 4 = direction/distance calculation
+       This option allows you to enter coordinates for direcion/distance 
+       calculations.
+    option 5 = galactic /REGION NAME/ map
+       This option prints the names of the sixteen major galactic regions
+       reffered to in the game.

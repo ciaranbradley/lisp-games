@@ -1,0 +1,14 @@
+A repo of the games I've made (from tutorials) in Common Lisp.
+
+GAMES
+Star-Trek v0.5
+_______________
+Based on the tutorial/source:
+http://home.online.no/~jpthing/games/startrek.html
+
+FILES
+star-trek.lisp
+startrek.hlp
+startrek.pic
+startrek.map
+______________
